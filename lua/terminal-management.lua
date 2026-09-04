@@ -6,9 +6,12 @@ local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 
-local previewers = require("telescope.previewers")
+local term_buffer_stack = {}
 
-local function get_active_terminal(opts)
+--- lists all currently active terminal and allow the user the navigate to each terminal
+--- telescope.nvim picker option
+--- @param opts table|nil
+function M.get_active_terminal(opts)
 	local active_terminal = vim.iter(vim.api.nvim_list_bufs())
 		:filter(function(bufid)
 			return vim.api.nvim_buf_is_loaded(bufid)
@@ -21,7 +24,7 @@ local function get_active_terminal(opts)
 		end)
 		:totable()
 
-	opts = opts or {}
+	opts = opts or require("telescope.themes").get_dropdown({})
 
 	pickers
 		.new(opts, {
@@ -72,8 +75,40 @@ local function terminal_name_exists(name)
 		) > 0
 end
 
-local function create_terminal_popup()
+local function create_terminal_handler(value)
+	if value == "" or value == nil then
+		print("terminal name cannot be empty!")
+		return
+	end
+
+	if terminal_name_exists(value) then
+		print("terminal with the name " .. value .. " already exists!")
+		return
+	end
+
+	vim.api.nvim_command("term")
+	local buf = vim.api.nvim_get_current_buf()
+
+	table.insert(term_buffer_stack, 1, buf)
+
+	vim.api.nvim_buf_set_name(buf, value)
+end
+
+function M.previous_terminal()
+	if #term_buffer_stack <= 0 then
+		print("end of terminal list")
+		return
+	end
+
+	vim.api.nvim_set_current_buf(term_buffer_stack[1])
+	table.remove(term_buffer_stack, 1)
+end
+
+--- creates a new terminal with a name specified by the user
+--- @param name string|nil
+function M.create_terminal()
 	local Input = require("nui.input")
+
 	local event = require("nui.utils.autocmd").event
 	local input = Input({
 		position = "50%",
@@ -90,20 +125,7 @@ local function create_terminal_popup()
 	}, {
 		prompt = "> ",
 		on_submit = function(value)
-			if value == "" then
-				print("terminal name cannot be empty!")
-				return
-			end
-
-			if terminal_name_exists(value) then
-				print("terminal with the name " .. value .. " already exists!")
-				return
-			end
-
-			vim.api.nvim_command("term")
-			local buf = vim.api.nvim_get_current_buf()
-
-			vim.api.nvim_buf_set_name(buf, value)
+			create_terminal_handler(value)
 		end,
 	})
 
@@ -116,22 +138,6 @@ local function create_terminal_popup()
 	input:map("i", "<Esc>", function()
 		input:unmount()
 	end)
-end
-
-function M.setup(opts)
-	local opts = opts or {}
-
-	vim.api.nvim_create_user_command("TMTestCall", function(args)
-		print("test call")
-	end, {})
-
-	vim.api.nvim_create_user_command("TMNewTerminal", function(args)
-		create_terminal_popup()
-	end, {})
-
-	vim.api.nvim_create_user_command("TMListTerminal", function(args)
-		get_active_terminal(opts.picker_style)
-	end, {})
 end
 
 return M
