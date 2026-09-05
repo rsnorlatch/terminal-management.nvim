@@ -1,1 +1,0 @@
-marker that this is the root directory of the plugin
