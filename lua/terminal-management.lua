@@ -1,7 +1,5 @@
 local M = {}
 
-local inspect = require("lib.inspect")
-
 local term_buffer = require("terminal-buffer")
 local picker = require("terminal-picker")
 
@@ -9,21 +7,11 @@ local logFilePath = "./logs/terminal-management-logs.log"
 
 os.remove(logFilePath)
 
-local function contains(a_value, in_table)
-	for i = 1, #in_table, 1 do
-		if in_table[i] == a_value then
-			return true
-		end
-	end
-
-	return false
-end
-
 local function log(message)
 	local logger = io.open(logFilePath, "a")
 
 	if logger == nil then
-		vim.print("log file not found!")
+		return
 	end
 
 	logger:write(message .. "\n")
@@ -35,10 +23,10 @@ local function log_current_buffer()
 	log("currrent_buffer: " .. vim.api.nvim_get_current_buf())
 	log(
 		"main buffer: "
-			.. inspect.inspect(term_buffer.term_buffer_stack)
+			.. vim.inspect(term_buffer.term_buffer_stack)
 			.. "\n"
 			.. "previous buffer: "
-			.. inspect.inspect(term_buffer.previous_term_buffer_stack)
+			.. vim.inspect(term_buffer.previous_term_buffer_stack)
 			.. "\n"
 	)
 end
@@ -46,7 +34,7 @@ end
 local disable_autocommand = false
 
 vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
-	callback = function(args)
+	callback = function()
 		if disable_autocommand then
 			return
 		end
@@ -109,6 +97,7 @@ local function create_terminal_handler(value)
 	log_current_buffer()
 end
 
+---Navigates to last opened terminal
 function M.previous_terminal()
 	disable_autocommand = true
 	if #term_buffer.term_buffer_stack <= 0 then
@@ -128,6 +117,7 @@ function M.previous_terminal()
 	disable_autocommand = false
 end
 
+---Undo navigation to previous terminal
 function M.next_terminal()
 	disable_autocommand = true
 	if #term_buffer.previous_term_buffer_stack <= 0 then
@@ -189,6 +179,9 @@ function M.create_terminal()
 	end)
 end
 
+--- lists all currently active terminal and allow the user the navigate to each terminal
+--- telescope.nvim picker option
+--- @param opts table|nil
 M.get_active_terminal = picker.get_active_terminal
 
 return M
