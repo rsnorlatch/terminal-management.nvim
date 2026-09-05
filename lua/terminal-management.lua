@@ -7,6 +7,7 @@ local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 
 local term_buffer_stack = {}
+local previous_term_buffer_stack = {}
 
 --- lists all currently active terminal and allow the user the navigate to each terminal
 --- telescope.nvim picker option
@@ -42,7 +43,8 @@ function M.get_active_terminal(opts)
 
 					local selected_buffer_id = selection.value[1]
 
-					vim.api.nvim_command("buffer " .. selected_buffer_id)
+					table.insert(term_buffer_stack, 1, vim.api.nvim_get_current_buf())
+					vim.api.nvim_set_current_buf(selected_buffer_id)
 				end)
 
 				return true
@@ -54,7 +56,7 @@ function M.get_active_terminal(opts)
 					return {
 						value = entry,
 						path = entry[2],
-						display = entry[2],
+						display = entry[1] .. " " .. entry[2],
 						ordinal = entry[2],
 					}
 				end,
@@ -94,14 +96,35 @@ local function create_terminal_handler(value)
 	vim.api.nvim_buf_set_name(buf, value)
 end
 
+vim.api.nvim_create_autocmd("BufLeave", {
+	callback = function(args)
+		local current_buf = vim.api.nvim_get_current_buf()
+		if vim.api.nvim_get_option_value("buftype", { buf = current_buf }) == "terminal" then
+			table.insert(term_buffer_stack, 1, current_buf)
+		end
+	end,
+})
+
 function M.previous_terminal()
 	if #term_buffer_stack <= 0 then
-		print("end of terminal list")
+		print("no more previous terminal")
 		return
 	end
 
 	vim.api.nvim_set_current_buf(term_buffer_stack[1])
 	table.remove(term_buffer_stack, 1)
+	table.insert(previous_term_buffer_stack, 1, term_buffer_stack[1])
+end
+
+function M.next_terminal()
+	if #previous_term_buffer_stack <= 0 then
+		print("no more next terminal")
+		return
+	end
+
+	vim.api.nvim_set_current_buf(previous_term_buffer_stack[1])
+	table.remove(previous_term_buffer_stack, 1)
+	table.insert(term_buffer_stack, 1, previous_term_buffer_stack[1])
 end
 
 --- creates a new terminal with a name specified by the user
