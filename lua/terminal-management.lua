@@ -2,32 +2,33 @@ local M = {}
 
 local inspect = require("lib.inspect")
 
-if log == nil then
-	vim.print("log file not found!")
-end
-
-local pickers = require("telescope.pickers")
-local finders = require("telescope.finders")
-local conf = require("telescope.config").values
-local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
-
 local term_buffer = require("terminal-buffer")
+local picker = require("terminal-picker")
 
-local logFilePath = "./logs/terminal-management-logs.txt"
+local logFilePath = "./logs/terminal-management-logs.log"
 
 os.remove(logFilePath)
 
-local function log(message)
-	local log = io.open(logFilePath, "a")
+local function contains(a_value, in_table)
+	for i = 1, #in_table, 1 do
+		if in_table[i] == a_value then
+			return true
+		end
+	end
 
-	if log == nil then
+	return false
+end
+
+local function log(message)
+	local logger = io.open(logFilePath, "a")
+
+	if logger == nil then
 		vim.print("log file not found!")
 	end
 
-	log:write(message .. "\n")
+	logger:write(message .. "\n")
 
-	log:close()
+	logger:close()
 end
 
 local function log_current_buffer()
@@ -42,66 +43,9 @@ local function log_current_buffer()
 	)
 end
 
---- lists all currently active terminal and allow the user the navigate to each terminal
---- telescope.nvim picker option
---- @param opts table|nil
-function M.get_active_terminal(opts)
-	local active_terminal = vim.iter(vim.api.nvim_list_bufs())
-		:filter(function(bufid)
-			return vim.api.nvim_buf_is_loaded(bufid)
-		end)
-		:filter(function(bufid)
-			return vim.api.nvim_get_option_value("buftype", { buf = bufid }) == "terminal"
-		end)
-		:map(function(bufid)
-			return { bufid, vim.api.nvim_buf_get_name(bufid) }
-		end)
-		:totable()
-
-	opts = opts or require("telescope.themes").get_dropdown({})
-
-	pickers
-		.new(opts, {
-			prompt_title = "active terminal",
-
-			attach_mappings = function(prompt_bufnr, map)
-				actions.select_default:replace(function()
-					actions.close(prompt_bufnr)
-					local selection = action_state.get_selected_entry()
-
-					if selection == nil then
-						print("no terminal selected")
-						return
-					end
-
-					local selected_buffer_id = selection.value[1]
-
-					vim.api.nvim_set_current_buf(selected_buffer_id)
-				end)
-
-				return true
-			end,
-
-			finder = finders.new_table({
-				results = active_terminal,
-				entry_maker = function(entry)
-					return {
-						value = entry,
-						path = entry[2],
-						display = entry[1] .. " " .. entry[2],
-						ordinal = entry[2],
-					}
-				end,
-			}),
-
-			sorter = conf.generic_sorter(opts),
-		})
-		:find()
-end
-
 local disable_autocommand = false
 
-vim.api.nvim_create_autocmd("BufLeave", {
+vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
 	callback = function(args)
 		if disable_autocommand then
 			return
@@ -111,10 +55,23 @@ vim.api.nvim_create_autocmd("BufLeave", {
 
 		if vim.api.nvim_get_option_value("buftype", { buf = current_buf }) == "terminal" then
 			term_buffer.term_buffer_push(current_buf)
+			return
 		end
 
-		-- log("executing autocommand on leaving buffer")
-		-- log_current_buffer()
+		if vim.api.nvim_get_option_value("filetype", { buf = current_buf }) == "" then
+			return
+		end
+
+		if vim.api.nvim_buf_is_loaded(current_buf) == false then
+			return
+		end
+
+		if (vim.api.nvim_get_option_value("buftype", { buf = current_buf })) == "prompt" then
+			return
+		end
+
+		log("navigating to non terminal buffer...")
+		log_current_buffer()
 	end,
 })
 
@@ -140,6 +97,8 @@ local function create_terminal_handler(value)
 		log("failed to create terminal, name exists")
 		return
 	end
+
+	term_buffer.term_buffer_push(vim.api.nvim_get_current_buf())
 
 	vim.api.nvim_command("term")
 	local buf = vim.api.nvim_get_current_buf()
@@ -228,5 +187,7 @@ function M.create_terminal()
 		input:unmount()
 	end)
 end
+
+M.get_active_terminal = picker.get_active_terminal
 
 return M

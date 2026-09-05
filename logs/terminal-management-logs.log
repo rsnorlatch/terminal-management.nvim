@@ -1,0 +1,72 @@
+creating terminal...
+currrent_buffer: 1
+main buffer: {}
+previous buffer: {}
+
+navigating to non terminal buffer...
+currrent_buffer: 14
+main buffer: { 1 }
+previous buffer: {}
+
+navigating to non terminal buffer...
+currrent_buffer: 14
+main buffer: { 1 }
+previous buffer: {}
+
+navigating to non terminal buffer...
+currrent_buffer: 14
+main buffer: { 1 }
+previous buffer: {}
+
+navigating to non terminal buffer...
+currrent_buffer: 14
+main buffer: { 1 }
+previous buffer: {}
+
+creating terminal...
+currrent_buffer: 25
+main buffer: { 1 }
+previous buffer: {}
+
+go to previous terminal...
+currrent_buffer: 25
+main buffer: { 1 }
+previous buffer: { 25 }
+
+go to previous terminal...
+currrent_buffer: 1
+main buffer: {}
+previous buffer: { 25 }
+
+creating terminal...
+currrent_buffer: 29
+main buffer: { 1 }
+previous buffer: { 25 }
+
+go to previous terminal...
+currrent_buffer: 1
+main buffer: {}
+previous buffer: { 29, 25 }
+
+no more previous terminal
+go to next terminal...
+currrent_buffer: 29
+main buffer: { 1 }
+previous buffer: { 25 }
+
+go to next terminal...
+currrent_buffer: 25
+main buffer: { 29, 1 }
+previous buffer: {}
+
+no more next terminal
+go to previous terminal...
+currrent_buffer: 29
+main buffer: { 1 }
+previous buffer: { 25 }
+
+go to previous terminal...
+currrent_buffer: 1
+main buffer: {}
+previous buffer: { 29, 25 }
+
