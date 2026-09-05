@@ -169,6 +169,7 @@ function M.create_terminal()
 				top = " terminal name ",
 				top_align = "center",
 			},
+			highlight = "@markup",
 		},
 	}, {
 		prompt = "> ",
