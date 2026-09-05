@@ -1,13 +1,34 @@
 local M = {}
 
+local inspect = require("lib.inspect")
+
+if log == nil then
+	vim.print("log file not found!")
+end
+
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 
-local term_buffer_stack = {}
-local previous_term_buffer_stack = {}
+local term_buffer = require("terminal-buffer")
+
+local logFilePath = "./logs/terminal-management-logs.txt"
+
+os.remove(logFilePath)
+
+local function log(message)
+	local log = io.open(logFilePath, "a")
+
+	if log == nil then
+		vim.print("log file not found!")
+	end
+
+	log:write(message .. "\n")
+
+	log:close()
+end
 
 --- lists all currently active terminal and allow the user the navigate to each terminal
 --- telescope.nvim picker option
@@ -43,7 +64,6 @@ function M.get_active_terminal(opts)
 
 					local selected_buffer_id = selection.value[1]
 
-					table.insert(term_buffer_stack, 1, vim.api.nvim_get_current_buf())
 					vim.api.nvim_set_current_buf(selected_buffer_id)
 				end)
 
@@ -91,44 +111,94 @@ local function create_terminal_handler(value)
 	vim.api.nvim_command("term")
 	local buf = vim.api.nvim_get_current_buf()
 
-	table.insert(term_buffer_stack, 1, buf)
-
 	vim.api.nvim_buf_set_name(buf, value)
+
+	log("creating terminal...")
+	log(
+		"main buffer: "
+			.. inspect.inspect(term_buffer.term_buffer_stack)
+			.. "\n"
+			.. "previous buffer: "
+			.. inspect.inspect(term_buffer.previous_term_buffer_stack)
+			.. "\n"
+	)
 end
+
+local disable_autocommand = false
 
 vim.api.nvim_create_autocmd("BufLeave", {
 	callback = function(args)
-		local current_buf = vim.api.nvim_get_current_buf()
-		if vim.api.nvim_get_option_value("buftype", { buf = current_buf }) == "terminal" then
-			table.insert(term_buffer_stack, 1, current_buf)
+		if disable_autocommand then
+			return
 		end
+
+		local current_buf = vim.api.nvim_get_current_buf()
+
+		if vim.api.nvim_get_option_value("buftype", { buf = current_buf }) == "terminal" then
+			term_buffer.term_buffer_push(current_buf)
+		end
+
+		log("executing autocommand on leaving buffer")
+		log(
+			"main buffer: "
+				.. inspect.inspect(term_buffer.term_buffer_stack)
+				.. "\n"
+				.. "previous buffer: "
+				.. inspect.inspect(term_buffer.previous_term_buffer_stack)
+				.. "\n"
+		)
 	end,
 })
 
 function M.previous_terminal()
-	if #term_buffer_stack <= 0 then
+	disable_autocommand = true
+	if #term_buffer.term_buffer_stack <= 0 then
 		print("no more previous terminal")
 		return
 	end
 
-	vim.api.nvim_set_current_buf(term_buffer_stack[1])
-	table.remove(term_buffer_stack, 1)
-	table.insert(previous_term_buffer_stack, 1, term_buffer_stack[1])
+	log("go to previous terminal...")
+	log(
+		"main buffer: "
+			.. inspect.inspect(term_buffer.term_buffer_stack)
+			.. "\n"
+			.. "previous buffer: "
+			.. inspect.inspect(term_buffer.previous_term_buffer_stack)
+			.. "\n"
+	)
+
+	local popped_buffer = term_buffer.term_buffer_pop()
+	term_buffer.previous_term_buffer_push(popped_buffer)
+
+	vim.api.nvim_set_current_buf(popped_buffer)
+	disable_autocommand = false
 end
 
 function M.next_terminal()
-	if #previous_term_buffer_stack <= 0 then
+	disable_autocommand = true
+	if #term_buffer.previous_term_buffer_stack <= 0 then
 		print("no more next terminal")
 		return
 	end
 
-	vim.api.nvim_set_current_buf(previous_term_buffer_stack[1])
-	table.remove(previous_term_buffer_stack, 1)
-	table.insert(term_buffer_stack, 1, previous_term_buffer_stack[1])
+	log("go to next terminal...")
+	log(
+		"main buffer: "
+			.. inspect.inspect(term_buffer.term_buffer_stack)
+			.. "\n"
+			.. "term buffer: "
+			.. inspect.inspect(term_buffer.previous_term_buffer_stack)
+			.. "\n"
+	)
+
+	local popped_buffer = term_buffer.previous_term_buffer_pop()
+	term_buffer.term_buffer_push(popped_buffer)
+
+	vim.api.nvim_set_current_buf(popped_buffer)
+	disable_autocommand = false
 end
 
 --- creates a new terminal with a name specified by the user
---- @param name string|nil
 function M.create_terminal()
 	local Input = require("nui.input")
 

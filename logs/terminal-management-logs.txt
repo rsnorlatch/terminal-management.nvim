@@ -1,0 +1,56 @@
+executing autocommand on leaving buffer
+main buffer: {}
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: {}
+previous buffer: {}
+
+creating terminal...
+main buffer: {}
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+executing autocommand on leaving buffer
+main buffer: { 1 }
+previous buffer: {}
+
+go to previous terminal...
+main buffer: { 1 }
+previous buffer: {}
+
