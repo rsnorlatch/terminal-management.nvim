@@ -4,16 +4,6 @@ main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 5
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 5
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
 currrent_buffer: 1
 main buffer: {}
 previous buffer: {}
@@ -24,282 +14,152 @@ main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 6
+currrent_buffer: 17
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 6
+currrent_buffer: 17
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 6
+currrent_buffer: 17
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 6
+currrent_buffer: 17
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 22
+currrent_buffer: 29
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 22
+currrent_buffer: 29
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 6
+currrent_buffer: 29
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 6
+currrent_buffer: 29
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 6
+currrent_buffer: 29
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 22
+currrent_buffer: 29
 main buffer: {}
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 22
+currrent_buffer: 29
 main buffer: {}
 previous buffer: {}
 
-navigating to non terminal buffer...
-currrent_buffer: 6
+creating terminal...
+currrent_buffer: 41
 main buffer: {}
 previous buffer: {}
 
-navigating to non terminal buffer...
-currrent_buffer: 6
-main buffer: {}
+creating terminal...
+currrent_buffer: 45
+main buffer: { 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 6
-main buffer: {}
+currrent_buffer: 29
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 29
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 29
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 17
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 17
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 17
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 
 navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 37
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 37
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 37
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 37
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
-previous buffer: {}
-
-navigating to non terminal buffer...
-currrent_buffer: 32
-main buffer: {}
+currrent_buffer: 1
+main buffer: { 45, 41 }
 previous buffer: {}
 

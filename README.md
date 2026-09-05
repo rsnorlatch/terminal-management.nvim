@@ -2,6 +2,9 @@
 
 a very simple utility plugin to manage multiple terminal window without leaving neovim
 
+![new_terminal_prompt]("./preview/new_terminal_prompt.png")
+![terminal_dropdown]("./preview/terminal_pickerpng.png")
+
 # installation
 
 ```lua
