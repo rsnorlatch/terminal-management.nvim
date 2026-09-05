@@ -1,4 +1,4 @@
-# description
+# Description
 
 a very simple utility plugin to manage multiple terminal window without leaving neovim
 
@@ -8,7 +8,7 @@ a very simple utility plugin to manage multiple terminal window without leaving 
 <img src="./preview/new_terminal_prompt.png" alt="new terminal prompt" />
 <img src="./preview/terminal_pickerpng.png" alt="terminal dropdown" />
 
-# installation
+# Installation
 
 ```lua
 {
@@ -20,7 +20,7 @@ a very simple utility plugin to manage multiple terminal window without leaving 
 }
 ```
 
-# usage example
+# Usage Example
 ```lua
       local terminal_management = require 'terminal-management'
 
