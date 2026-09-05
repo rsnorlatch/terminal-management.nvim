@@ -2,9 +2,6 @@
 
 a very simple utility plugin to manage multiple terminal window without leaving neovim
 
-<!-- ![new_terminal_prompt]("./preview/new_terminal_prompt.png") -->
-<!-- ![terminal_dropdown]("./preview/terminal_pickerpng.png") -->
-
 <img src="./preview/new_terminal_prompt.png" alt="new terminal prompt" />
 <img src="./preview/terminal_pickerpng.png" alt="terminal dropdown" />
 
