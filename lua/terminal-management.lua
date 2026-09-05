@@ -184,6 +184,8 @@ function M.next_terminal()
 		next_buffer = term_buffer.previous_term_buffer_pop()
 	end
 
+	term_buffer.term_buffer_push(vim.api.nvim_get_current_buf())
+
 	vim.api.nvim_set_current_buf(next_buffer)
 
 	log("go to next terminal...")
