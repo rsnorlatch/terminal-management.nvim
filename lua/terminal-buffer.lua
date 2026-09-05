@@ -9,8 +9,16 @@ local function buffer_exists(stack, buf)
 	end)
 end
 
+local function buffer_is_not_term(buf)
+	return vim.api.nvim_get_option_value("buftype", { buf = buf }) ~= "terminal"
+end
+
 function M.term_buffer_push(value)
 	if buffer_exists(M.term_buffer_stack, value) then
+		return
+	end
+
+	if buffer_is_not_term(value) then
 		return
 	end
 
@@ -19,6 +27,10 @@ end
 
 function M.previous_term_buffer_push(value)
 	if buffer_exists(M.previous_term_buffer_stack, value) then
+		return
+	end
+
+	if buffer_is_not_term(value) then
 		return
 	end
 
@@ -33,7 +45,7 @@ function M.term_buffer_pop()
 end
 
 function M.previous_term_buffer_pop()
-	local removedBuffer = M.term_buffer_stack[1]
+	local removedBuffer = M.previous_term_buffer_stack[1]
 	table.remove(M.previous_term_buffer_stack, 1)
 
 	return removedBuffer

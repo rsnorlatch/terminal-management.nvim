@@ -30,6 +30,18 @@ local function log(message)
 	log:close()
 end
 
+local function log_current_buffer()
+	log("currrent_buffer: " .. vim.api.nvim_get_current_buf())
+	log(
+		"main buffer: "
+			.. inspect.inspect(term_buffer.term_buffer_stack)
+			.. "\n"
+			.. "previous buffer: "
+			.. inspect.inspect(term_buffer.previous_term_buffer_stack)
+			.. "\n"
+	)
+end
+
 --- lists all currently active terminal and allow the user the navigate to each terminal
 --- telescope.nvim picker option
 --- @param opts table|nil
@@ -87,43 +99,6 @@ function M.get_active_terminal(opts)
 		:find()
 end
 
-local function terminal_name_exists(name)
-	return #(
-			vim.iter(vim.api.nvim_list_bufs())
-				:filter(function(buf)
-					return vim.api.nvim_buf_get_name(buf) == (vim.fn.getcwd() .. "/" .. name)
-				end)
-				:totable()
-		) > 0
-end
-
-local function create_terminal_handler(value)
-	if value == "" or value == nil then
-		print("terminal name cannot be empty!")
-		return
-	end
-
-	if terminal_name_exists(value) then
-		print("terminal with the name " .. value .. " already exists!")
-		return
-	end
-
-	vim.api.nvim_command("term")
-	local buf = vim.api.nvim_get_current_buf()
-
-	vim.api.nvim_buf_set_name(buf, value)
-
-	log("creating terminal...")
-	log(
-		"main buffer: "
-			.. inspect.inspect(term_buffer.term_buffer_stack)
-			.. "\n"
-			.. "previous buffer: "
-			.. inspect.inspect(term_buffer.previous_term_buffer_stack)
-			.. "\n"
-	)
-end
-
 local disable_autocommand = false
 
 vim.api.nvim_create_autocmd("BufLeave", {
@@ -138,39 +113,59 @@ vim.api.nvim_create_autocmd("BufLeave", {
 			term_buffer.term_buffer_push(current_buf)
 		end
 
-		log("executing autocommand on leaving buffer")
-		log(
-			"main buffer: "
-				.. inspect.inspect(term_buffer.term_buffer_stack)
-				.. "\n"
-				.. "previous buffer: "
-				.. inspect.inspect(term_buffer.previous_term_buffer_stack)
-				.. "\n"
-		)
+		-- log("executing autocommand on leaving buffer")
+		-- log_current_buffer()
 	end,
 })
+
+local function terminal_name_exists(name)
+	return #(
+			vim.iter(vim.api.nvim_list_bufs())
+				:filter(function(buf)
+					return vim.api.nvim_buf_get_name(buf) == (vim.fn.getcwd() .. "/" .. name)
+				end)
+				:totable()
+		) > 0
+end
+
+local function create_terminal_handler(value)
+	if value == "" or value == nil then
+		print("terminal name cannot be empty!")
+		log("failed to create terminal, name empty")
+		return
+	end
+
+	if terminal_name_exists(value) then
+		print("terminal with the name " .. value .. " already exists!")
+		log("failed to create terminal, name exists")
+		return
+	end
+
+	vim.api.nvim_command("term")
+	local buf = vim.api.nvim_get_current_buf()
+
+	vim.api.nvim_buf_set_name(buf, value)
+
+	log("creating terminal...")
+	log_current_buffer()
+end
 
 function M.previous_terminal()
 	disable_autocommand = true
 	if #term_buffer.term_buffer_stack <= 0 then
 		print("no more previous terminal")
+		log("no more previous terminal")
 		return
 	end
 
-	log("go to previous terminal...")
-	log(
-		"main buffer: "
-			.. inspect.inspect(term_buffer.term_buffer_stack)
-			.. "\n"
-			.. "previous buffer: "
-			.. inspect.inspect(term_buffer.previous_term_buffer_stack)
-			.. "\n"
-	)
+	term_buffer.previous_term_buffer_push(vim.api.nvim_get_current_buf())
 
 	local popped_buffer = term_buffer.term_buffer_pop()
-	term_buffer.previous_term_buffer_push(popped_buffer)
-
 	vim.api.nvim_set_current_buf(popped_buffer)
+
+	log("go to previous terminal...")
+	log_current_buffer()
+
 	disable_autocommand = false
 end
 
@@ -178,23 +173,22 @@ function M.next_terminal()
 	disable_autocommand = true
 	if #term_buffer.previous_term_buffer_stack <= 0 then
 		print("no more next terminal")
+		log("no more next terminal")
 		return
 	end
 
-	log("go to next terminal...")
-	log(
-		"main buffer: "
-			.. inspect.inspect(term_buffer.term_buffer_stack)
-			.. "\n"
-			.. "term buffer: "
-			.. inspect.inspect(term_buffer.previous_term_buffer_stack)
-			.. "\n"
-	)
-
 	local popped_buffer = term_buffer.previous_term_buffer_pop()
-	term_buffer.term_buffer_push(popped_buffer)
+	local next_buffer = popped_buffer
 
-	vim.api.nvim_set_current_buf(popped_buffer)
+	if popped_buffer == vim.api.nvim_get_current_buf() then
+		next_buffer = term_buffer.previous_term_buffer_pop()
+	end
+
+	vim.api.nvim_set_current_buf(next_buffer)
+
+	log("go to next terminal...")
+	log_current_buffer()
+
 	disable_autocommand = false
 end
 
